@@ -1,5 +1,4 @@
-# Recommender_System
-电影推荐系统
+# Recommender_System (电影推荐系统)
 
 ## 项目目录结构
 ```
@@ -21,7 +20,7 @@ Recommender_System/
 │   │   ├── urls.py
 │   │   └── wsgi.py
 │   ├── manage.py          # Django管理脚本
-│   └── ...                # 未来你的Django app会放在这里
+│   └── ...                # Django app会放在这里
 ├── .gitignore
 └── README.md
 ```
