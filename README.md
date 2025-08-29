@@ -2,6 +2,7 @@
 电影推荐系统
 
 ## 项目目录结构
+```
 Recommender_System/
 ├── .git/
 ├── .idea/                 # (被.gitignore忽略)
@@ -13,13 +14,14 @@ Recommender_System/
 │   ├── douban_crawler.py
 │   └── web_crawler.py
 ├── django_project/        # 存放所有的Django代码
-│   ├── config/            # Django项目配置 (原config文件夹)
+│   ├── config/            # Django项目配置
 │   │   ├── __init__.py
 │   │   ├── asgi.py
 │   │   ├── settings.py
 │   │   ├── urls.py
 │   │   └── wsgi.py
 │   ├── manage.py          # Django管理脚本
-│   └── ...                # Django app会放在这里
+│   └── ...                # 未来你的Django app会放在这里
 ├── .gitignore
 └── README.md
+```
