@@ -1,6 +1,7 @@
 # Recommender_System
 电影推荐系统
 
+## 项目目录结构
 Recommender_System/
 ├── .git/
 ├── .idea/                 # (被.gitignore忽略)
