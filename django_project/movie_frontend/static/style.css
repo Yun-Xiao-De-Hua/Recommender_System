@@ -1,0 +1,1431 @@
+/* movie_frontend/static/style.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+:root {
+    --color-background: #14181c;
+    --color-surface: #1e242a;
+    --color-primary: #00e054;
+    --color-text-primary: #e1e3e5;
+    --color-text-secondary: #a4b1c2;
+    --color-border: #2c3440;
+    --navbar-height: 60px;
+    --font-family: 'Roboto', sans-serif;
+}
+
+/* --- 全局样式 --- */
+body {
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+    font-family: var(--font-family);
+    margin: 0;
+    padding-top: var(--navbar-height); /* 为固定导航栏留出空间 */
+}
+
+/* 新增：当 body 有这个类时，移除顶部内边距，让内容可以顶到最上面 */
+body.full-bleed-header {
+    padding-top: 0;
+}
+
+a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+a:hover {
+    color: #fff;
+    text-decoration: none;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+h1, h2, h3 {
+    font-weight: 700;
+    color: #fff;
+}
+
+h1 { font-size: 2.2rem; }
+h2 { font-size: 1.5rem; margin-bottom: 1.2rem; }
+
+/* --- 导航栏 (核心修改) --- */
+.navbar {
+    background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+    height: var(--navbar-height);
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+}
+/* MODIFIED: 为了左右布局，新增两个 div */
+.nav-left, .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+.navbar .logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #fff; /* MODIFIED: 确保 Logo 颜色也是白色 */
+}
+.nav-links, .auth-links {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    gap: 25px;
+}
+/* MODIFIED: 字体颜色和大小 */
+.nav-links a, .auth-links a, .auth-links .hello {
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 1.0rem; /* 增大字号 */
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5); /* 添加轻微阴影以增强可读性 */
+}
+
+/* --- NEW: 搜索框样式 --- */
+.search-bar {
+    position: relative;
+}
+.search-bar input {
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    padding: 8px 15px 8px 40px; /* 左边留出图标空间 */
+    color: #fff;
+    width: 200px;
+    transition: all 0.3s ease;
+}
+.search-bar input::placeholder {
+    color: #ddd;
+}
+.search-bar input:focus {
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.3);
+    width: 250px; /* 聚焦时变宽 */
+}
+.search-bar button {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+}
+.search-bar button svg {
+    stroke: #fff;
+}
+
+
+/* --- 按钮 --- */
+.btn {
+    display: inline-block;
+    padding: 0.8rem 1.8rem;
+    border-radius: 5px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+.primary-btn {
+    background-color: var(--color-primary);
+    color: #000;
+}
+.primary-btn:hover {
+    background-color: #00E054;
+    transform: translateY(-2px);
+    color: #000; /* 新增：确保悬停时文字变为黑色 */
+}
+
+/* --- 首页 Hero Section (核心修改) --- */
+.home-hero {
+    height: 100vh; /* MODIFIED: 改为100vh，铺满全屏 */
+    min-height: 450px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-size: cover;
+    background-position: center;
+}
+/* 遮罩层 (核心修改) */
+.home-hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    /* MODIFIED: 渐变调整，底部更实，中间到顶部更透明，以看清背景 */
+    background: linear-gradient(to top, var(--color-background) 0%, rgba(20, 24, 28, 0.4) 30%, transparent 70%);
+}
+.hero-content {
+    position: relative; /* 确保在遮罩层之上 */
+    z-index: 2;
+    color: #fff;
+}
+.hero-content h1 {
+    font-size: 3.2rem;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+}
+.hero-content p {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+}
+
+/* --- 电影网格 & 卡片 (核心模仿部分) --- */
+.movie-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+}
+.movie-card {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    aspect-ratio: 2 / 3; /* 经典海报比例 */
+    background-color: var(--color-surface);
+    display: block;
+}
+.movie-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    z-index: 10;
+}
+.movie-card .poster-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.movie-card .poster-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-secondary);
+}
+/* 鼠标悬停时的遮罩和标题 */
+.movie-card .overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+.movie-card:hover .overlay {
+    opacity: 1;
+}
+.movie-card .overlay .title {
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.8rem;
+}
+.movie-card .overlay .year {
+    color: var(--color-text-secondary);
+    font-size: 0.6rem;
+}
+
+
+/* --- 电影详情页 (核心修改) --- */
+.movie-detail-header {
+    width: 100%;
+    height: 60vh;
+    min-height: 400px;
+    position: relative;
+    background-size: cover;
+    /* MODIFIED: 调整背景图垂直位置，让主体内容更居中或偏上一点 */
+    background-position: center 30%;
+}
+/* 遮罩层 (核心修改) */
+.movie-detail-header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    /* MODIFIED: 同样调整渐变，让背景更清晰 */
+    background: linear-gradient(to top, var(--color-background) 5%, rgba(20, 24, 28, 0.6) 40%, transparent 80%);
+}
+.detail-header-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.detail-main-info {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-end;
+}
+.detail-poster {
+    width: 200px;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+}
+.detail-title-group h1 {
+    margin: 0 0 0.5rem 0;
+}
+.detail-title-group .meta {
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+}
+.detail-title-group .meta a { color: #fff; font-weight: 700; }
+
+.movie-detail-body {
+    padding-top: 2rem;
+}
+
+.genres {
+    display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0;
+}
+.genre-tag {
+    background-color: var(--color-surface);
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border);
+}
+.summary p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--color-text-primary);
+}
+.cast-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+}
+.cast-member { font-weight: 500; }
+
+/* --- 表单样式 --- */
+form.card {
+    background: var(--color-surface);
+    padding: 2rem;
+    border-radius: 8px;
+    max-width: 500px;
+    margin: 2rem auto;
+}
+form.card p {
+    margin-bottom: 1.5rem;
+}
+form.card input[type="text"],
+form.card input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-primary);
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* --- Choose Favorites Page --- */
+.choose-favorites-grid .movie-card {
+    cursor: pointer;
+}
+.choose-favorites-grid .movie-card .select-indicator {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 24px;
+    height: 24px;
+    background-color: rgba(0,0,0,0.7);
+    border: 2px solid #fff;
+    border-radius: 50%;
+    transition: all 0.2s;
+    z-index: 12;
+}
+.choose-favorites-grid input[type="checkbox"] {
+    display: none;
+}
+.choose-favorites-grid input[type="checkbox"]:checked + .movie-card .select-indicator {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+.choose-favorites-grid input[type="checkbox"]:checked + .movie-card {
+    box-shadow: 0 0 0 3px var(--color-primary);
+    transform: scale(1.05);
+}
+.actions-bar {
+    text-align: center;
+    margin-top: 2rem;
+    padding: 1rem;
+    background: var(--color-surface);
+    border-radius: 8px;
+}
+
+/* --- 评论区样式 --- */
+.reviews-section {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+}
+.reviews-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+.review-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    color: var(--color-text-secondary);
+}
+.review-source {
+    font-weight: bold;
+    color: var(--color-text-primary);
+}
+.review-content p {
+    margin: 0;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+}
+/* 新增：为数字分数添加样式 */
+.review-score {
+    font-weight: bold;
+    font-size: 0.8rem;
+    color: var(--color-primary);
+}
+
+/* --- 个人中心页面 (Profile Page) --- */
+.profile-header {
+    height: 40vh;
+    min-height: 300px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+}
+
+.profile-header-overlay {
+    position: relative;
+    z-index: 2;
+    background-color: rgba(20, 24, 28, 0.6);
+    padding: 2rem;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.profile-avatar-container {
+    margin-bottom: 1rem;
+}
+
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid #fff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+}
+
+.profile-username {
+    margin: 0.5rem 0;
+    font-size: 2.5rem;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+}
+
+.profile-bio {
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+    max-width: 600px;
+}
+
+.profile-main {
+    padding-top: 2rem;
+}
+
+.profile-tabs-nav {
+    display: flex;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 2rem;
+}
+
+.tab-link {
+    background: none;
+    border: none;
+    color: var(--color-text-secondary);
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border-bottom: 3px solid transparent;
+}
+
+.tab-link:hover {
+    color: #fff;
+}
+
+.tab-link.active {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+    animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.profile-form.card {
+    margin-bottom: 2rem;
+}
+
+.user-reviews-list .user-review-item {
+    margin-bottom: 1.5rem;
+    background-color: var(--color-surface);
+    padding: 1.5rem;
+    border-radius: 8px;
+}
+
+.history-list {
+    list-style: none;
+    padding: 0;
+}
+
+.history-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.history-list li:hover {
+    background-color: var(--color-surface);
+}
+
+.history-time {
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+}
+
+/* --- 电影详情页操作按钮 --- */
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    align-items: center;
+}
+
+.favorite-btn {
+    background-color: var(--color-surface);
+    color: #fff;
+    padding: 0.7rem; /* 使其接近方形 */
+    border-radius: 50%; /* 圆形按钮 */
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-border);
+}
+
+.favorite-btn svg {
+    transition: all 0.2s ease;
+}
+
+.favorite-btn:hover {
+    background-color: var(--color-border);
+}
+
+/* 喜欢之后的状态 */
+.favorite-btn.favorited {
+    border-color: #ff4581;
+}
+
+.favorite-btn.favorited svg {
+    fill: #ff4581; /* 填充颜色 */
+    stroke: #ff4581; /* 边框颜色 */
+}
+
+/* --- 个人中心背景优化 --- */
+.profile-header {
+    height: 65vh; /* 从 40vh 增加到 65vh */
+    min-height: 450px; /* 增加最小高度 */
+}
+
+/* --- 个人中心表单UI优化 --- */
+.profile-form.card {
+    padding: 2rem;
+}
+.profile-form h3 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 0.8rem;
+}
+
+/* 将多个表单组合在一个卡片里 */
+.profile-form.card form {
+    margin-bottom: 2rem;
+}
+.profile-form.card form:last-child {
+    margin-bottom: 0;
+}
+
+.form-group {
+    margin-bottom: 1.2rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-primary);
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+}
+
+.form-help-text {
+    display: block;
+    margin-top: 0.4rem;
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+}
+
+.form-error {
+    color: #ff4581;
+    font-size: 0.8rem;
+    margin-top: 0.4rem;
+}
+
+/* --- 个人资料 Bio 文本框样式协调 --- */
+.form-group textarea {
+    width: 100%;
+    min-height: 120px; /* 增加最小高度 */
+    padding: 12px;
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-primary);
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+    font-family: var(--font-family); /* 继承字体 */
+    font-size: 1rem; /* 继承字号 */
+}
+
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+}
+
+
+/* --- 自定义文件上传组件样式 --- */
+.file-upload-group {
+    /* Django 默认会用 p 标签包裹，我们先重置一下 */
+    margin: 0;
+    padding: 0;
+}
+
+/* 隐藏原始的 "选择文件" 按钮 */
+.file-upload-group input[type="file"] {
+    display: none;
+}
+
+/* "目前: ..." 和 "清除" 复选框的样式 */
+.file-upload-group .clearable-file-input {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 1rem;
+}
+
+.file-upload-group .clearable-file-input a {
+    color: var(--color-primary);
+    word-break: break-all; /* 防止长文件名撑破布局 */
+}
+
+/* 自定义的 "选择文件" 按钮 */
+.file-upload-btn {
+    background-color: var(--color-surface);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border);
+    margin-right: 1rem;
+}
+.file-upload-btn:hover {
+    background-color: var(--color-border);
+    color: #fff;
+}
+
+/* 显示已选择文件名的区域 */
+.file-upload-filename {
+    display: inline-block;
+    vertical-align: middle;
+    color: var(--color-text-secondary);
+}
+
+/* 清除复选框的标签样式 */
+.file-upload-group .clearable-file-input label {
+    margin-top: 0.5rem;
+    cursor: pointer;
+}
+
+/* --- 电影详情页评论区增强 --- */
+.comment-form-container.card {
+    background-color: var(--color-surface);
+    padding: 2rem;
+    border-radius: 8px;
+    margin-bottom: 3rem;
+}
+
+#comment-form .form-group select,
+#comment-form .form-group textarea {
+    width: 100%;
+    padding: 12px;
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-primary);
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+    font-family: var(--font-family);
+    font-size: 1rem;
+}
+
+#comment-form .form-group select:focus,
+#comment-form .form-group textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* 改为 flex-start 以对齐多行内容 */
+}
+
+.review-author-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.review-timestamp {
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+    margin-top: 0.25rem;
+}
+
+.review-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border);
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+}
+
+.review-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.review-actions a,
+.review-actions button {
+    background: none;
+    border: none;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+}
+
+.review-actions a:hover,
+.review-actions button:hover {
+    color: var(--color-primary);
+}
+
+.btn-delete {
+    color: #ff4581;
+}
+.btn-delete:hover {
+    color: #ff78a3;
+}
+
+/* --- 评论区点赞功能样式 --- */
+.like-section {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.btn-like {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-like svg {
+    stroke: var(--color-text-secondary);
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-like:hover svg {
+    stroke: #ff4581;
+    transform: scale(1.1);
+}
+
+/* 已点赞状态 */
+.btn-like.liked svg {
+    stroke: #ff4581;
+    fill: #ff4581;
+}
+
+/* --- 分页控件样式 --- */
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2.5rem;
+    padding: 1rem;
+    background-color: var(--color-surface);
+    border-radius: 8px;
+}
+.pagination-links {
+    display: flex;
+    gap: 0.5rem;
+}
+.pagination-links a, .pagination-links span {
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    text-decoration: none;
+    color: var(--color-text-secondary);
+}
+.pagination-links a:hover {
+    background-color: var(--color-border);
+    color: #fff;
+}
+.pagination-links .current {
+    background-color: var(--color-primary);
+    color: #000;
+    font-weight: bold;
+}
+.page-info {
+    color: var(--color-text-secondary);
+}
+
+/* --- 电影列表页：标签式类型筛选器 --- */
+.filters {
+    margin-bottom: 2rem;
+}
+.genre-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+}
+.genre-pill {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    border: 1px solid var(--color-border);
+    border-radius: 20px;
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+.genre-pill:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+.genre-pill.active {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #000;
+    font-weight: bold;
+}
+
+/* --- 选择喜好页：筛选栏 --- */
+.favorites-filter-form {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    align-items: center;
+    background-color: var(--color-surface);
+    padding: 1.5rem;
+    border-radius: 8px;
+}
+.favorites-filter-form .search-input,
+.favorites-filter-form .genre-select {
+    padding: 12px;
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-primary);
+    border-radius: 4px;
+    font-size: 1rem;
+}
+.favorites-filter-form .search-input {
+    flex-grow: 1; /* 占据更多空间 */
+}
+
+/* --- 选择喜好页：浮动提交栏 --- */
+.actions-bar.floating {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(30, 36, 42, 0.95); /* 带透明度的背景 */
+    backdrop-filter: blur(10px);
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--color-border);
+    z-index: 1001;
+    transform: translateY(100%); /* 默认隐藏在屏幕下方 */
+    transition: transform 0.3s ease-in-out;
+}
+.actions-bar.floating.visible {
+    transform: translateY(0); /* 显示 */
+}
+.actions-bar.floating .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem; /* 调整内边距 */
+}
+#selection-counter {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+/* --- 选择喜好页：实体偏好按钮样式 --- */
+.btn-toggle-entity {
+    background: none;
+    border: 1px solid var(--color-primary);
+    color: var(--color-primary);
+    padding: 0.4rem 0.8rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+.btn-toggle-entity:hover {
+    background-color: var(--color-primary);
+    color: #000;
+}
+
+/* 新增：已添加状态的样式 */
+.btn-toggle-entity.added {
+    background-color: var(--color-primary);
+    color: #000;
+    border-color: var(--color-primary);
+}
+
+/* --- 选择喜好页：选项卡式发现中心 --- */
+.browse-container.card {
+    background-color: var(--color-surface);
+    padding: 0; /* 移除内边距，由内部元素控制 */
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    overflow: hidden; /* 确保圆角生效 */
+}
+
+.browse-tabs {
+    display: flex;
+    background-color: var(--color-background); /* 比卡片颜色稍深 */
+}
+
+.tab-button {
+    flex-grow: 1;
+    padding: 1rem;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: var(--color-text-secondary);
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tab-button:hover {
+    background-color: var(--color-surface);
+    color: #fff;
+}
+
+.tab-button.active {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+}
+
+.tab-content-container {
+    padding: 2rem;
+}
+
+.tab-pane {
+    display: none; /* 默认隐藏 */
+}
+
+.tab-pane.active {
+    display: block; /* 显示激活的面板 */
+    animation: fadeIn 0.5s; /* 添加淡入动画 */
+}
+
+/* 调整搜索表单，使其适应新布局 */
+.tab-pane .entity-search-form {
+    padding: 0;
+    background: none;
+    margin-bottom: 0;
+}
+
+/* --- 浮动栏UI遮挡解决方案 --- */
+body.floating-bar-active main {
+    /* 当浮动栏激活时，给主内容区增加底部内边距 */
+    /* 120px 是一个安全的高度，通常大于浮动栏 */
+    padding-bottom: 120px;
+    transition: padding-bottom 0.3s ease-in-out;
+}
+
+/* --- 选择喜好页：美化搜索栏 --- */
+.entity-search-form .search-bar-wrapper {
+    position: relative;
+    display: flex;
+    width: 100%;
+}
+
+.entity-search-form .search-input {
+    flex-grow: 1;
+    padding: 14px 20px; /* 增加内边距 */
+    padding-right: 120px; /* 为按钮留出空间 */
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-primary);
+    border-radius: 8px; /* 圆角 */
+    font-size: 1.1rem;
+    transition: border-color 0.2s ease;
+}
+
+.entity-search-form .search-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+}
+
+.entity-search-form .search-submit-btn {
+    position: absolute;
+    right: 8px; /* 距离右侧的边距 */
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 10px 20px; /* 调整按钮内边距 */
+    border-radius: 6px; /* 按钮也加圆角 */
+}
+
+/* 隐藏按钮上的文字，如果屏幕较窄 */
+@media (max-width: 768px) {
+    .entity-search-form .search-submit-btn span {
+        display: none;
+    }
+    .entity-search-form .search-input {
+        padding-right: 60px; /* 窄屏时为按钮留出更少空间 */
+    }
+}
+
+/* --- 选择喜好页：胶囊式标签 --- */
+.entity-pills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.entity-pill {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: 50px; /* 胶囊形状 */
+    color: var(--color-text-secondary);
+    background-color: var(--color-surface);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.entity-pill:hover {
+    border-color: var(--color-primary);
+    color: #fff;
+}
+
+.entity-pill.added {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #000;
+    font-weight: bold;
+}
+
+/* --- 人物发现页：子选项卡 --- */
+.sub-tabs {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--color-border);
+}
+.sub-tab-button {
+    /* --- 核心修复：重置按钮的默认样式 --- */
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit; /* 确保字体一致 */
+
+    /* --- 原有样式保持不变 --- */
+    padding: 0.5rem 0;
+    margin-bottom: -1px; /* 让下边框重合 */
+    border-bottom: 3px solid transparent;
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+.sub-tab-button:hover {
+    color: #fff;
+}
+.sub-tab-button.active {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+}
+
+/* --- 选择喜好页：胶囊式标签增强 --- */
+.entity-pill.added {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #000;
+    font-weight: bold;
+}
+.entity-pill.added:hover {
+    background-color: #00b342; /* 悬停时颜色稍深 */
+    border-color: #00b342;
+}
+
+/* --- 子选项卡面板 --- */
+.sub-tab-pane {
+    display: none;
+}
+.sub-tab-pane.active {
+    display: block;
+}
+
+/* --- 导航栏退出按钮样式 (美化版) --- */
+.logout-form {
+    margin: 0;
+    padding: 0;
+    /* 让表单在flex布局中可以垂直居中 */
+    display: flex;
+    align-items: center;
+}
+
+.nav-link-button {
+    /* 基础重置 */
+    background: transparent; /* 透明背景 (幽灵按钮核心) */
+    border: 1px solid var(--color-border); /* 使用主题中的边框颜色 */
+    cursor: pointer;
+
+    /* 尺寸和形状 */
+    padding: 0.4rem 1rem; /* 内边距，制造呼吸感 */
+    border-radius: 5px; /* 轻微圆角 */
+
+    /* 字体样式 */
+    color: var(--color-text-secondary); /* 使用次要文字颜色，不那么刺眼 */
+    font-family: inherit; /* 继承父元素的字体 */
+    font-weight: 500;
+    font-size: 0.9rem; /* 略微缩小字号，使其更精致 */
+
+    /* 交互动效 */
+    transition: all 0.2s ease-in-out;
+}
+
+.nav-link-button:hover {
+    background-color: var(--color-primary); /* 悬停时用主色填充 */
+    border-color: var(--color-primary); /* 边框也变为主题色 */
+    color: #000; /* 反色文字，确保可读性 */
+    transform: translateY(-1px); /* 轻微上浮效果 */
+    box-shadow: 0 4px 10px rgba(0, 224, 84, 0.2); /* 添加与主色匹配的辉光效果 */
+}
+
+/* --- 登录/注册页面布局与样式 (终极版) --- */
+body.auth-page {
+    padding-top: 0 !important; /* 强制移除为导航栏留出的空间 */
+}
+
+/* 隐藏登录/注册页面的导航栏和页脚，提供沉浸式体验 */
+.auth-page header,
+.auth-page .site-footer {
+    display: none;
+}
+
+/* 让 <main> 填满整个屏幕并负责居中 */
+.auth-page main {
+    min-height: 100vh; /* 确保 main 至少和视窗一样高 */
+    display: flex;
+    align-items: center; /* 垂直居中 */
+    justify-content: center; /* 水平居中 */
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+/* 背景层样式 (无变化) */
+body.auth-page::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: -1;
+    background-image: url('images/xiaowangzi.jpg');
+    background-size: cover;
+    background-position: center;
+    filter: blur(4px) brightness(0.6);
+    transform: scale(1.05);
+}
+
+/* 卡片样式 (现在可以安全地应用宽度) */
+.auth-page .card {
+    background-color: rgba(30, 36, 42, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--color-border);
+    width: 100%;
+    max-width: 550px;
+}
+
+/* 针对登录/注册页面的表单组样式微调 */
+.auth-page .form-group {
+    margin-bottom: 1.5rem;
+}
+.auth-page .form-group label {
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+.auth-page .form-group input {
+    width: 100%;
+    padding: 12px;
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-primary);
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+.auth-page .form-group input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+}
+.form-help-text-block {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+}
+.form-help-text-block ul {
+    padding-left: 1.2rem;
+    margin: 0.5rem 0 0;
+}
+
+
+/* --- 网站全局页脚样式 --- */
+.site-footer {
+    background-color: var(--color-surface); /* 使用一个微妙的、稍亮的背景色 */
+    padding: 0.5rem 0; /* 提供充足的垂直内边距 */
+    margin-top: 7rem; /* 与上方主内容区保持距离 */
+    border-top: 1px solid var(--color-border); /* 顶部分割线 */
+    text-align: center; /* 所有内容居中 */
+}
+
+.site-footer .container {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.footer-primary-text {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--color-text-primary); /* 使用主文字颜色，更醒目 */
+    margin: 0 0 0.5rem 0; /* 与下方文字的间距 */
+}
+
+.footer-secondary-text {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary); /* 使用次要文字颜色，更柔和 */
+    margin: 0;
+}
+
+/* --- 首页：带刷新按钮的区域标题 --- */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.2rem; /* 保持与原h2的间距一致 */
+}
+
+.section-header h2 {
+    margin-bottom: 0; /* 移除h2自身的间距 */
+}
+
+.btn-refresh {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-refresh:hover {
+    border-color: var(--color-primary);
+    color: #fff;
+}
+
+.btn-refresh svg {
+    transition: transform 0.5s ease;
+}
+
+.btn-refresh:hover svg {
+    transform: rotate(180deg);
+}
+
+/* --- AJAX 加载效果 --- */
+.movie-grid.loading {
+    opacity: 0.5;
+    transition: opacity 0.3s ease-in-out;
+    pointer-events: none; /* 防止在加载时误点 */
+}
+
+
+/* --- 电影详情页：返回按钮 (修正版) --- */
+.btn-back {
+    /* 不再使用 position: absolute */
+    display: inline-flex; /* 使用flex布局让图标和文字对齐 */
+    align-items: center;
+    gap: 0.5rem;
+    background-color: rgba(30, 36, 42, 0.7);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-primary);
+    padding: 0.6rem 1.2rem;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+    transition: all 0.2s ease;
+    margin-bottom: 1rem; /* 与下方的标题保持间距 */
+}
+
+.btn-back:hover {
+    background-color: var(--color-surface);
+    color: #fff;
+}
+
+
+/* --- 推荐页面：加载动画样式 --- */
+.loader-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    color: var(--color-text-secondary);
+}
+.loader {
+    border: 4px solid var(--color-surface);
+    border-top: 4px solid var(--color-primary);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1.5rem;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* --- 推荐页面：美化版空状态 --- */
+.empty-state-container {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 2rem;
+    background-color: var(--color-surface);
+    border-radius: 8px;
+}
+.empty-state-container h2 {
+    font-size: 1.8rem;
+    color: #fff;
+    margin-bottom: 1rem;
+}
+.empty-state-container p {
+    font-size: 1.1rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 2rem;
+}

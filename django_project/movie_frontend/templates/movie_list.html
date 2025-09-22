@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}电影列表 - 电影推荐系统{% endblock %}
+
+{% block content %}
+<div class="container">
+    <section class="movie-list-container">
+        <!-- MODIFIED: 新的标签式类型筛选器 -->
+        <div class="filters">
+            <div class="genre-pills">
+                <a href="{% url 'movie_frontend:movie_list' %}" class="genre-pill {% if not selected_genre_id %}active{% endif %}">所有类型</a>
+                {% for genre in genres %}
+                    <a href="?genre={{ genre.id }}" class="genre-pill {% if selected_genre_id == genre.id %}active{% endif %}">
+                        {{ genre.name }}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="movie-grid">
+            <!-- MODIFIED: 循环 page_obj.object_list -->
+            {% for movie in page_obj.object_list %}
+                <a href="{% url 'movie_frontend:movie_detail' movie.id %}" class="movie-card">
+                    {% if movie.poster_url %}
+                        <img src="{{ movie.poster_url }}" alt="{{ movie.display_title }}" class="poster-img">
+                    {% else %}
+                        <div class="poster-placeholder">{{ movie.display_title }}</div>
+                    {% endif %}
+                    <div class="overlay">
+                        <div class="title">{{ movie.display_title }}</div>
+                        <div class="year">{{ movie.release_year }}</div>
+                    </div>
+                </a>
+            {% empty %}
+                <p>没有找到符合条件的电影。</p>
+            {% endfor %}
+        </div>
+
+        <!-- NEW: 引入分页控件 -->
+        {% include 'partials/_pagination.html' with page_obj=page_obj %}
+
+    </section>
+</div>
+{% endblock %}
